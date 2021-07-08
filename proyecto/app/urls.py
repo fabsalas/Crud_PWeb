@@ -1,6 +1,6 @@
-from django.contrib import admin
+from app.views import inicio
 from django.urls import path
 
 urlpatterns = [
-    path('', admin.site.urls),
+    path('', inicio, name='indice'),
 ]
