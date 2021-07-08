@@ -9,5 +9,5 @@ class Sistema(models.Model):
 
 class Smartphone(models.Model):
     id       = models.AutoField(primary_key=True)
-    modelo   =models.CharField(max_length=99)
+    modelo   = models.CharField(max_length=99)
     sistema  = models.ForeignKey(Sistema, on_delete=CASCADE)

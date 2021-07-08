@@ -10,12 +10,13 @@
 </head>
 <body>
 <div class="row">
+    <!--Boton agregar-->
         <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregar">
         Agregar
     </button>
     
-    <!-- Modal -->
+    <!-- Modal para agregar-->
     <div class="modal fade" id="agregar" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <form action="{% url 'agregar' %}" method="POST">
@@ -52,7 +53,7 @@
   
     
     
-
+<!--tabla donde se muestran los smartphones-->
     <div class="container">
         <table class="table">
             <thead>
@@ -81,7 +82,71 @@
             </tbody>
           </table>
     </div>
-    
+
+    <!--formulario para editar los smartphones-->
+    {% for smartphone in smartphones %} 
+        <!-- Modal -->
+        <div class="modal fade" id="editar-{{foorloop.counter}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="{% url 'editar' smartphone.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="staticBackdropLabel">Editar #id{{smartphone.id}}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="modelo" class="form-label">Modelo</label>
+                                <input type="text" class="form-control" id="modelo" name="modelo" value="{{smartphone.modelo}}"></input>
+                            </div>
+        
+                            <div class="mb-3">
+                                <label for="sistema" class="form-label">Sistema</label>
+                                <select  class="form-select form-select-lg" id="sistema" name="sistema">
+                                    {% for sistema in sistemas %}
+                                        {%if sistema.id == smartphone.sistema.id %}
+                                            <option value="{{sistema.id}}" selected>{{sistema.nombre}}</option>
+                                        {%else%}
+                                            <option value="{{sistema.id}}">{{sistema.nombre}}</option>
+                                        {%endif%}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Editar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <!--formulario para eliminar los smartphones-->
+
+    <!-- Modal -->
+    <div class="modal fade" id="eliminar-{{foorloop.counter}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="{% url 'eliminar' smartphone.id %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Eliminar #id {{smartphone.id}}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                            ¿Esta seguro que desea eliminar {{smartphone.modelo}} del sistema?
+                    </div>  
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{%endfor%}
+
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
